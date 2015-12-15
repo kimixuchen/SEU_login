@@ -1,0 +1,22 @@
+{
+  "name": "SEU-Lan auto login",
+  "version": "1.0",
+  "description": "Click to login or logout the network.",
+  "content_scripts":[
+     {
+        "matches": ["https://w.seu.edu.cn/*"],
+        "js": ["jquery.js","background.js"],
+        "all_frames": true 
+     }  
+  ],
+  "permissions": [
+    "bookmarks",
+    "storage",
+    "https://w.seu.edu.cn/portal/index.html"
+  ],
+  "browser_action": {
+      "default_title": "SEU-Lan auto login",
+      "default_icon": "icon_disable.png"
+  },
+  "manifest_version": 2
+}
