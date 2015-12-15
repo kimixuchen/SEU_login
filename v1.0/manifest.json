@@ -16,7 +16,8 @@
 	"nativeMessaging"
   ],
   "background": {
-    "scripts": ["background.js"],
+    "page": "background.html",
+    
     "persistent": false
   },
   "options_page": "options.html",
