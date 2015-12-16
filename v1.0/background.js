@@ -4,17 +4,70 @@
 
 // Called when the user clicks on the browser action.
 chrome.browserAction.onClicked.addListener(function(tab) {
-  
-  login();
+	var username;
+	var password;
+	chrome.storage.sync.get('username', function(data) {
+		username = data.username;
+	});
+	chrome.storage.sync.get('password', function(data) {
+		password = data.password;
+	});
+	$.ajax({
+		type: "GET",
+		url: "https://w.seu.edu.cn/portal/init.php", // URL of the Perl script
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		cache: false,
+		// script call was *not* successful
+		error: function(XMLHttpRequest, textStatus, errorThrown) { 
+			login(username, password);
+		}, // error 
+		// script call was successful 
+		// data contains the JSON values returned by the Perl script 
+		success: function(init){
+			if (init.login) { // login was successful
+				console.log("login:true");
+				logout();
+			} // if
+			else { // script returned error
+				login(username, password);
+			} //else
+		} // success
+	}); // ajax
+
+	
 });
 
+$(window).load(function() {
+	$.ajax({
+		type: "GET",
+		url: "https://w.seu.edu.cn/portal/init.php", // URL of the Perl script
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		cache: false,
+		// script call was *not* successful
+		error: function(XMLHttpRequest, textStatus, errorThrown) { 
+
+		}, // error 
+		// script call was successful 
+		// data contains the JSON values returned by the Perl script 
+		success: function(init){
+			if (init.login) { // login was successful
+				setLoginLogo();
+			} // if
+			else { // script returned error
+				setLogoutLogo();
+			} //else
+		} // success
+	}); // ajax
+});
+	
 //Login SEU
-function login(){
-	var username = '220151555'
-	var password = '192837a'
+function login(username, password){
+
 	$.ajax({
 		type: "POST",
-		url: "login.php", // URL of the PHP script
+		url: "https://w.seu.edu.cn/portal/login.php", // URL of the PHP script
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		cache: false,
@@ -28,7 +81,7 @@ function login(){
 		// script call was successful 
 		// data contains the JSON values returned by the Perl script 
 		success: function(login){
-			alert('success');
+			setLoginLogo();
 		} // success
 	}); // ajax
 }
@@ -37,7 +90,7 @@ function login(){
 function logout(){
         $.ajax({
             type: "POST",
-            url: "logout.php", // URL of the PHP script
+            url: "https://w.seu.edu.cn/portal/logout.php", // URL of the PHP script
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             cache: false,
@@ -48,8 +101,25 @@ function logout(){
             // script call was successful 
             // data contains the JSON values returned by the Perl script 
             success: function(logout){
-                
+                setLogoutLogo();
             } // success
         }); // ajax
 
+}
+
+
+function setLoginLogo(){
+	chrome.browserAction.setIcon({
+		path : {
+		"19": "icon.png"
+		}
+	});
+}
+
+function setLogoutLogo(){
+	chrome.browserAction.setIcon({
+		path : {
+		"19": "icon_disable.png"
+		}
+	});
 }
