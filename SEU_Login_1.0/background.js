@@ -26,7 +26,6 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		// data contains the JSON values returned by the Perl script 
 		success: function(init){
 			if (init.login) { // login was successful
-				console.log("login:true");
 				logout();
 			} // if
 			else { // script returned error
@@ -38,30 +37,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 	
 });
 
-$(window).load(function() {
-	$.ajax({
-		type: "GET",
-		url: "https://w.seu.edu.cn/portal/init.php", // URL of the Perl script
-		contentType: "application/json; charset=utf-8",
-		dataType: "json",
-		cache: false,
-		// script call was *not* successful
-		error: function(XMLHttpRequest, textStatus, errorThrown) { 
 
-		}, // error 
-		// script call was successful 
-		// data contains the JSON values returned by the Perl script 
-		success: function(init){
-			if (init.login) { // login was successful
-				setLoginLogo();
-			} // if
-			else { // script returned error
-				setLogoutLogo();
-			} //else
-		} // success
-	}); // ajax
-});
-	
 //Login SEU
 function login(username, password){
 
@@ -81,7 +57,12 @@ function login(username, password){
 		// script call was successful 
 		// data contains the JSON values returned by the Perl script 
 		success: function(login){
-			setLoginLogo();
+			if(login.error){
+				alert("Internal Error, Login Failed!");
+			}
+			else{
+				setLoginLogo();
+			}
 		} // success
 	}); // ajax
 }

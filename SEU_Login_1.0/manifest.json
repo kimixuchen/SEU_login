@@ -1,12 +1,12 @@
 {
   "name": "SEU Login",
   "description": "SEU auto login",
-  "version": "2.0",
+  "version": "2.1",
   "icons":{"16":"icon_disable.png"},
   "content_scripts":[
 	{
 		"matches":["https://w.seu.edu.cn/*"],
-		"js":["jquery-1.7.1.min.js", "login.js"],
+		"js":["jquery-1.7.1.min.js"],
 		"all_frames":true
 	}
   ],
