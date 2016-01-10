@@ -1,7 +1,7 @@
 {
-  "name": "SEU Login",
+  "name": "东南大学校园网自动登陆",
   "description": "SEU auto login",
-  "version": "2.1",
+  "version": "2.2",
   "icons":{"16":"icon_disable.png"},
   "content_scripts":[
 	{
